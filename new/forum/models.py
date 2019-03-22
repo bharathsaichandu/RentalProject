@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-from taggit.managers import TaggableManager
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.urls import reverse
@@ -20,6 +19,8 @@ class entire_house(models.Model):
     user_name = models.CharField(max_length=120, null=True)
     user = models.CharField(max_length=120, null=True)
     email = models.EmailField(max_length=120, null=True)
+    phone=models.IntegerField(null=True)
+
     City = models.CharField(max_length=100, blank=False, null=True)
     Area = models.CharField(max_length=100, blank=False, null=True)
     Address = models.CharField(max_length=200, blank=False, null=True)
@@ -82,6 +83,7 @@ class private_room(models.Model):
     user_name = models.CharField(max_length=120, null=True)
     user = models.CharField(max_length=120, null=True)
     email = models.EmailField(max_length=120, null=True)
+    phone=models.IntegerField(null=True)
     City = models.CharField(max_length=100, blank=False, null=True)
     Area = models.CharField(max_length=100, blank=False, null=True)
     Address = models.CharField(max_length=200, blank=False, null=True)
@@ -144,6 +146,8 @@ class shared_room(models.Model):
     user_name = models.CharField(max_length=120, null=True)
     user=models.CharField(max_length=120,null=True)
     email=models.EmailField(max_length=120,null=True)
+    phone=models.IntegerField(null=True)
+
     City=models.CharField(max_length=100,blank=False,null=True)
     Area=models.CharField(max_length=100,blank=False,null=True)
     Address=models.CharField(max_length=200,blank=False,null=True)
@@ -201,7 +205,7 @@ class share_room_Images(models.Model):
                               verbose_name='Image(optional)',blank=True
                               )
 
-class question(models.Model):
+'''class question(models.Model):
     title = models.CharField(max_length=120)
     height_field=models.IntegerField(default=0)
     width_field=models.IntegerField(default=0)
@@ -226,7 +230,7 @@ class Images(models.Model):
                               verbose_name='Image(optional)',blank=True
                               )
     #i_id=models.IntegerField(default=0)
-
+'''
 '''class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     name = models.CharField(max_length=30)

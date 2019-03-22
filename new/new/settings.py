@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT=os.path.dirname(os.path.abspath(__file__))
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIRii = os.path.dirname(os.path.dirname(__file__))
 print("BASE_DIRii",BASE_DIRii)
 # Quick-start development settings - unsuitable for production
@@ -26,8 +27,8 @@ SECRET_KEY = '5@der*folr*9-y%d4@j_xl-*rg3f-(6zu82z+zm47ub8(76ebx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#ALLOWED_HOSTS = ['rentalmanagementsystem.herokuapp.com']
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'forum',
-    'taggit',
     'crispy_forms',
     'multiselectfield',
 ]
@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'new.urls'
@@ -130,22 +132,19 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-'''
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static"),
     #'/var/www/static/',
 ]
-'''
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "forum","static"),
-    #'/var/www/static/',
-]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 #STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"static_cdn")
-STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"deployment","static_cdn")
+STATIC_ROOT=os.path.join((BASE_DIR),"static_cdn")
 #MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),"media")
 
-MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),"deployment","media")
-MEDIA_URL='/deployment/media/'
+MEDIA_ROOT=BASE_DIR+"\media"
+MEDIA_URL='/media/'
 print(BASE_DIR)
 print(MEDIA_ROOT)
 

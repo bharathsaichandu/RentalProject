@@ -4,36 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect,get_object_or_404
 from django import http
-from . forms import questionForm,ImageForm,UserRegisterForm,sharedroomform,\
-    shareImageForm,privateImageForm,privateroomform,entirehouseform,entirehouseImageForm,SearchForm#,ModuleForm
-from .models import question,Images,share_room_Images,private_room_Images,entire_house_Images,shared_room,private_room,entire_house
+from . forms import UserRegisterForm,sharedroomform,shareImageForm,privateroomform,entirehouseform
+from .models import share_room_Images,shared_room,private_room,entire_house
 from django.http import Http404,HttpResponseRedirect
 from django.contrib import messages
 from django.forms import modelformset_factory
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
-
-def searchview(request):
-    if request.method == 'GET':
-
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            state = form.cleaned_data['state']
-            area = form.cleaned_data['area']
-            #module_name = form.cleaned_data['module_name']
-            #results = Module.objects.all()
-            '''if release_num:
-                results = results.filter(metamodule__release__number=release_num)
-            if metamodule_name:
-                result = results.filter(metamodule__name=metamodule_name)
-            if module_name:
-                result = results.filter(name=module_name)'''
-            #return render(request, 'search/search_result.html', {'form': form, 'results': results})
-            return render(request,'search.html',{'form':form})
-    else:
-        form = SearchForm()
-        return render(request, 'search_form.html', {'form': form})
+#chandu
 
 @login_required
 def change_password(request):
@@ -71,38 +49,7 @@ def signup(request):
 
 
 
-@login_required
-def ask_question(request):
-
-     ImageFormSet = modelformset_factory(Images,
-                                        form=ImageForm, extra=6 )
-     print("hrllo")
-     if request.method == 'POST':
-        print("jnkjnkjnjkj k")
-        question_Form = questionForm(request.POST or None,request.FILES or None)
-        formset = ImageFormSet(request.POST, request.FILES,
-                               queryset=Images.objects.none())
-
-        if question_Form.is_valid():
-            print("coming")
-            question_Form = question_Form.save(commit=False)
-            question_Form.user = request.user
-            question_Form.save()
-
-            messages.success(request,
-                             "Yeeew, check it out on the home page!")
-            return http.HttpResponseRedirect('/')
-        else:
-            print("in else")
-            print
-            question_Form.errors#, formset.errors
-     else:
-        question_Form = questionForm()
-        formset = ImageFormSet(queryset=Images.objects.none())
-     context={'postForm': question_Form}
-     return render(request, 'ask_question.html',context)
-
-
+'''
 def question_detail_view(request,my_id):
     obj=question.objects.get(id=my_id)
     imag=Images.objects.all()
@@ -114,10 +61,10 @@ def question_detail_view(request,my_id):
         raise Http404
     share_string = quote_plus(obj.description)
     a=[]
-    '''for i in imag:
+        for i in imag:
         if i.questionn == obj:
             if i.image:
-                a.append(i.image)'''
+                a.append(i.image)
     a=[]
     a.append(obj.image1.url)
     length=len(a)
@@ -125,14 +72,14 @@ def question_detail_view(request,my_id):
     print(obj.image1.url)
     context={'object':obj,"share_string":share_string,'imag':imag,'a':a,'range':range(length),'one':one}
     return render(request,'question_detail.html',context)
-
+'''
 def house_detail_view(request,my_id):
     obj=shared_room.objects.get(id=my_id)
     imag=share_room_Images.objects.all()
     try :
         obj =shared_room.objects.get(id=my_id)
         imag = share_room_Images.objects.all()
-    except question.DoesNotExist:
+    except obj.DoesNotExist:
         raise Http404
     share_string = quote_plus(obj.Area)
     username = None
@@ -183,7 +130,7 @@ def privateroom_detail_view(request,my_id):
     try :
         obj =private_room.objects.get(id=my_id)
         imag = share_room_Images.objects.all()
-    except question.DoesNotExist:
+    except private_room.DoesNotExist:
         raise Http404
    # share_string = quote_plus(obj.Area)
     username = None
@@ -233,7 +180,7 @@ def entirehouse_detail_view(request,my_id):
     try :
         obj =entire_house.objects.get(id=my_id)
         imag = share_room_Images.objects.all()
-    except question.DoesNotExist:
+    except entire_house.DoesNotExist:
         raise Http404
    # share_string = quote_plus(obj.Area)
     print(obj.user_name)
@@ -279,7 +226,7 @@ def entirehouse_detail_view(request,my_id):
     context={'optional':optional,'value':value,'lenofoptional':lengthofoptional,'object':obj,'imag':imag,'a':a,'range':range(length),'one':one,'essential':some_var,'lenofessential':lengthofessential}
     return render(request,'entirehousedetail.html',context)
 
-
+'''
 @login_required
 def question_edit_view(request,my_id=None):
     obj = question.objects.get(id=my_id)
@@ -333,16 +280,12 @@ def question_list_view(request):
         "page_request_var":page_request_var,
     }
     return render(request,'question_list.html',context)
-
+'''
 def sharedroom_list_view(request):
     print("dklmlkm")
     queryset_list=shared_room.objects.all()
     imag = share_room_Images.objects.all()
-    try:
-        #obj = question.objects.get(id=my_id)
-        imag = Images.objects.all()
-    except question.DoesNotExist:
-        raise Http404
+
     query=request.GET.get("city")
     query1=request.GET.get("area")
     query2 = request.GET.get("gender")
@@ -407,11 +350,11 @@ def privateroom_list_view(request):
     print("dklmlkm")
     queryset_list=private_room.objects.all()
     imag = share_room_Images.objects.all()
-    try:
+    #try:
         #obj = question.objects.get(id=my_id)
-        imag = Images.objects.all()
-    except question.DoesNotExist:
-        raise Http404
+     #   imag = Images.objects.all()
+    #except question.DoesNotExist:
+     #   raise Http404
     query=request.GET.get("city")
     query1=request.GET.get("area")
     query2 = request.GET.get("gender")
@@ -477,11 +420,11 @@ def entirehouse_list_view(request):
     print("dklmlkm")
     queryset_list=entire_house.objects.all()
     imag = share_room_Images.objects.all()
-    try:
+    #try:
         #obj = question.objects.get(id=my_id)
-        imag = Images.objects.all()
-    except question.DoesNotExist:
-        raise Http404
+     #   imag = Images.objects.all()
+    #except question.DoesNotExist:
+     #   raise Http404
     query=request.GET.get("city")
     query1=request.GET.get("area")
     query2 = request.GET.get("gender")
@@ -619,8 +562,8 @@ def sharedroompostedit(request,my_id=None):
     if obj.image6:
         a.append(obj.image6.url)
 
-    formset = modelformset_factory(Images,
-                                   form=ImageForm, extra=6)  # queryset=Images.objects.all().filter(id=my_id))
+    #formset = modelformset_factory(Images,
+     #                              form=ImageForm, extra=6)  # queryset=Images.objects.all().filter(id=my_id))
 
     form = sharedroomform(request.POST or None, request.FILES or None, instance=obj)
 
@@ -631,7 +574,7 @@ def sharedroompostedit(request,my_id=None):
         return HttpResponseRedirect(obj.get_absolute_url())
     try:
         obj = shared_room.objects.get(id=my_id)
-    except question.DoesNotExist:
+    except shared_room.DoesNotExist:
         raise Http404
 
     edit = 'edit'
@@ -656,8 +599,6 @@ def privateroompostedit(request,my_id=None):
     if obj.image6:
         a.append(obj.image6.url)
 
-    formset = modelformset_factory(Images,
-                                   form=ImageForm, extra=6)  # queryset=Images.objects.all().filter(id=my_id))
 
     form = privateroomform(request.POST or None, request.FILES or None, instance=obj)
 
@@ -668,7 +609,7 @@ def privateroompostedit(request,my_id=None):
         return HttpResponseRedirect(obj.get_absolute_url())
     try:
         obj = private_room.objects.get(id=my_id)
-    except question.DoesNotExist:
+    except private_room.DoesNotExist:
         raise Http404
 
     edit = 'edit'
@@ -750,8 +691,6 @@ def entirehousepostedit(request,my_id=None):
     if obj.image6:
         a.append(obj.image6.url)
 
-    formset = modelformset_factory(Images,
-                                   form=ImageForm, extra=6)  # queryset=Images.objects.all().filter(id=my_id))
 
     form = entirehouseform(request.POST or None, request.FILES or None, instance=obj)
 
@@ -762,7 +701,7 @@ def entirehousepostedit(request,my_id=None):
         return HttpResponseRedirect(obj.get_absolute_url())
     try:
         obj = entire_house.objects.get(id=my_id)
-    except question.DoesNotExist:
+    except entire_house.DoesNotExist:
         raise Http404
 
     edit = 'edit'

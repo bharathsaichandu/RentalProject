@@ -5,13 +5,14 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import formset_factory
 from django.forms import modelformset_factory
-from .models import question,Images,shared_room,share_room_Images,private_room,private_room_Images,entire_house,entire_house_Images
-from taggit.forms import *
+from .models import shared_room,share_room_Images,private_room,private_room_Images,entire_house,entire_house_Images#question,Images,
+
 
 class entirehouseform(forms.ModelForm):
     user_name=forms.CharField(label='',widget=forms.HiddenInput(),required=False)
     user = forms.CharField(label='owner name', widget=forms.TextInput(attrs={"placeholder": "owner name",'style': 'width:500px'}), required=True)
     email = forms.EmailField(label='Email',widget=forms.TextInput(attrs={"placeholder": "email",'style': 'width:500px'}), required=True)
+    phone=forms.IntegerField(label="phone",widget=forms.NumberInput(attrs={'style':'width:500px'}),required=True)
     City = forms.CharField(label='city', widget=forms.TextInput(attrs={"placeholder": "city",'style': 'width:500px'}), required=True)
     Area = forms.CharField(label='area name', widget=forms.TextInput(attrs={"placeholder": "area",'style': 'width:500px'}), required=True)
     Address = forms.CharField(label='address',widget=forms.TextInput(attrs={"placeholder": "address",'style': 'width:500px'}), required=True)
@@ -79,6 +80,7 @@ class privateroomform(forms.ModelForm):
     user_name=forms.CharField(label='',widget=forms.HiddenInput(),required=False)
     user = forms.CharField(label='owner name', widget=forms.TextInput(attrs={"placeholder": "owner name",'style': 'width:500px'}), required=True)
     email = forms.EmailField(label='Email',widget=forms.TextInput(attrs={"placeholder": "email",'style': 'width:500px'}), required=True)
+    phone = forms.IntegerField(label="phone", widget=forms.NumberInput(attrs={'style': 'width:500px'}), required=True)
     City = forms.CharField(label='city', widget=forms.TextInput(attrs={"placeholder": "city",'style': 'width:500px'}), required=True)
     Area = forms.CharField(label='area name', widget=forms.TextInput(attrs={"placeholder": "area",'style': 'width:500px'}), required=True)
     Address = forms.CharField(label='address',widget=forms.TextInput(attrs={"placeholder": "address",'style': 'width:500px'}), required=True)
@@ -143,6 +145,7 @@ class sharedroomform(forms.ModelForm):
     user_name=forms.CharField(label='',widget=forms.HiddenInput(),required=False)
     user = forms.CharField(label='owner name', widget=forms.TextInput(attrs={"placeholder": "owner name",'style': 'width:500px'}), required=True)
     email = forms.EmailField(label='Email',widget=forms.TextInput(attrs={"placeholder": "email",'style': 'width:500px'}), required=True)
+    phone = forms.IntegerField(label="phone", widget=forms.NumberInput(attrs={'style': 'width:500px'}), required=True)
     City = forms.CharField(label='city', widget=forms.TextInput(attrs={"placeholder": "city",'style': 'width:500px'}), required=True)
     Area = forms.CharField(label='area name', widget=forms.TextInput(attrs={"placeholder": "area",'style': 'width:500px'}), required=True)
     Address = forms.CharField(label='address',widget=forms.TextInput(attrs={"placeholder": "address",'style': 'width:500px'}), required=True)
@@ -200,7 +203,7 @@ class sharedroomform(forms.ModelForm):
                 'essentialamenities','optionalamenities','description','image1','image2','image3','image4','image5','image6'
                 ]
         widgets = {'user_name': forms.HiddenInput()}
-class questionForm(forms.ModelForm):
+'''class questionForm(forms.ModelForm):
     title = forms.CharField(label='',
                             widget=forms.TextInput(attrs={"placeholder": "Your title"}))
     description = forms.CharField(
@@ -231,7 +234,7 @@ class questionForm(forms.ModelForm):
         ]
         #fields = "__all__"
         widgets={'user':forms.HiddenInput()}
-
+'''
 class shareImageForm(forms.ModelForm):
     image = forms.ImageField(label='Image(optional)')
     i_id=forms.IntegerField(widget=forms.HiddenInput(),required=False)
@@ -255,7 +258,7 @@ class privateImageForm(forms.ModelForm):
     class Meta:
         model = private_room_Images
         fields = ('image', )
-
+'''
 class ImageForm(forms.ModelForm):
     image = forms.ImageField(label='Image(optional)')
     i_id=forms.IntegerField(widget=forms.HiddenInput(),required=False)
@@ -263,7 +266,7 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Images
         fields = ('image', )
-
+'''
 #FestivalAddressFormSet = inlineformset_factory(FestivalForm, FestivalAddress, form=FestivalAddressForm, extra=2)
 
 class UserRegisterForm(UserCreationForm):
@@ -279,7 +282,7 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-
+'''
 class SearchForm(forms.Form):
     city = forms.CharField(label='',
                             widget=forms.TextInput(attrs={"placeholder": "enter city"}))
@@ -296,7 +299,7 @@ class SearchForm(forms.Form):
         #fields = "__all__"
         widgets={'user':forms.HiddenInput()}
 
-
+'''
 '''class ModuleForm(forms.Form):
     release_num = forms.ModelChoiceField(queryset=Release.objects.all(), empty_label='Pick a Release')
     metamodule_name = forms.ModelChoiceField(queryset=Metamodule.objects.all(), empty_label='Pick a Meta module')
